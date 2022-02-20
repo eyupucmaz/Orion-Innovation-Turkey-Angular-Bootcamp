@@ -17,3 +17,11 @@ Output: [1,2]
 
 Input: nums = [3,3], target = 6
 Output: [0,1]
+
+
+## Approach-1 
+`target = a + b;` Takes each number with a loop then loop through the others and compare them.
+
+
+## Approach-2
+`target - a = b;` Takes each number with a loop then subtracting this number to target. That will give us a which number should find on array. 
