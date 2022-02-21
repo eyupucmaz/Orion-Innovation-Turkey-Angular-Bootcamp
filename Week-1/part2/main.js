@@ -8,6 +8,8 @@ let player2 = "O";
 let currentPlayer = player1;
 let gameOver = false;
 let win = false;
+
+// Winning Combinations
 let winCombos = [
 	[0, 1, 2],
 	[3, 4, 5],
@@ -19,6 +21,7 @@ let winCombos = [
 	[2, 4, 6],
 ];
 
+// Creating boxes
 function createBoxes() {
 	for (let i = 0; i < row * col; i++) {
 		let box = document.createElement("div");
@@ -27,6 +30,34 @@ function createBoxes() {
 	}
 }
 
+function changeCurrentPlayer() {
+	currentPlayer === player1
+		? (currentPlayer = player2)
+		: (currentPlayer = player1);
+}
 
+function handleClik() {
+	let boxes = document.querySelectorAll(".box");
+	boxes.forEach((box) => {
+		box.addEventListener("click", (e) => {
+			if (gameOver === false) {
+				if (currentPlayer === player1) {
+					box.textContent = player1;
+					console.log(box.textContent);
+          changeCurrentPlayer();
+				} else {
+					box.textContent = player2;
+					console.log(box.textContent);
+          changeCurrentPlayer();
+				}
+			}
+		});
+	});
+}
 
-createBoxes();
+function play() {
+	createBoxes();
+	handleClik();
+}
+
+play();
