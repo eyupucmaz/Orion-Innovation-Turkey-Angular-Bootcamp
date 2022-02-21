@@ -20,6 +20,18 @@ let winCombos = [
 	[0, 4, 8],
 	[2, 4, 6],
 ];
+// Initilaze game state object
+let currentGameState = {};
+
+// Setting box states with data-num attribute
+function setGameState() {
+	let boxes = document.querySelectorAll(".box");
+	boxes.forEach((box) => {
+		let att = box.attributes.getNamedItem("data-num").nodeValue;
+		let value = box.textContent;
+		currentGameState[att] = value;
+	});
+}
 
 /**
  * @param  {Number} row Number of row
@@ -27,11 +39,14 @@ let winCombos = [
  * @param  {HTMLElement} parent Parent element of boxes, boxes gonna be inside this element
  * @description creates boxes for tic tac toe game
  */
-function createBoxes(row,col,parent) {
+function createBoxes(row, col, parent) {
 	for (let i = 0; i < row * col; i++) {
 		let box = document.createElement("div");
 		box.classList.add("box");
 		parent.appendChild(box);
+		let dataNum = document.createAttribute("data-num");
+		dataNum.value = `${i}`;
+		box.setAttributeNode(dataNum);
 	}
 }
 
@@ -43,17 +58,24 @@ function changeCurrentPlayer() {
 
 function handleClik() {
 	let boxes = document.querySelectorAll(".box");
-	boxes.forEach((box) => {
+	boxes.forEach((box, index) => {
 		box.addEventListener("click", (e) => {
 			if (gameOver === false) {
 				if (currentPlayer === player1) {
-					box.textContent = player1;
-					console.log(box.textContent);
-          changeCurrentPlayer();
-				} else {
-					box.textContent = player2;
-					console.log(box.textContent);
-          changeCurrentPlayer();
+					if (!currentGameState[index]) {
+						console.log("dolu degil");
+						box.textContent = player1;
+						changeCurrentPlayer();
+						setGameState();
+						console.log(currentGameState);
+					}
+				} else if (currentPlayer === player2) {
+					if (!currentGameState[index]) {
+						box.textContent = player2;
+						changeCurrentPlayer();
+						setGameState();
+						console.log(currentGameState);
+					}
 				}
 			}
 		});
@@ -61,7 +83,7 @@ function handleClik() {
 }
 
 function play() {
-	createBoxes(row,col,game);
+	createBoxes(row, col, game);
 	handleClik();
 }
 
