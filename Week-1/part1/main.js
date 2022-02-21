@@ -31,7 +31,7 @@ console.log(findPairs(input, target));
 // Approach-2
 function findPairsTwo(input, target) {
 	let pairs = []; // array to store the pairs
-	let remain = 0; // number should find in input array
+	let remain = 0; // number which we should find in input array
 	// loop through the input array
 	for (let i = 0; i < input.length; i++) {
 		// target - a = b
