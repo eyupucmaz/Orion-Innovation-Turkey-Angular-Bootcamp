@@ -1,0 +1,35 @@
+*, *::after,*::before {
+  box-sizing: border-box;
+}
+:root{
+  --box-width: 100px;
+  --box-height: 100px;
+  --box-color: #000;
+  --box-bg-color: #fff;
+  --box-border-color: #000;
+  --box-border-width: 1px;
+
+}
+
+body{
+  margin: 0;
+}
+
+.game{
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  grid-template-columns: repeat(3, auto);
+  background-color: #f5f5f5;
+  gap: 0px;
+}
+
+.box{
+  width: var(--box-width);
+  height: var(--box-height);
+  background-color: var(--box-bg-color);
+  border: var(--box-border-width) solid var(--box-border-color);
+  cursor: pointer;
+}
