@@ -1,5 +1,9 @@
-let game = document.querySelector(".game");
-let player = document.querySelector(".player");
+// Using strict mode to write more secure code
+"use strict";
+
+let game = document.querySelector("#game");
+let player = document.querySelector("#player");
+let resBtn = document.querySelector("#restart");
 
 let row = 3;
 let col = 3;
@@ -24,16 +28,6 @@ let winCombos = [
 // Initilaze game state object
 let gameState = {};
 
-// Setting box states with data-num attribute
-function setGameState() {
-	let boxes = document.querySelectorAll(".box");
-	boxes.forEach((box) => {
-		let att = box.attributes.getNamedItem("data-num").nodeValue;
-		let value = box.textContent;
-		gameState[att] = value;
-	});
-}
-
 /**
  * @param  {Number} row Number of row
  * @param  {Number} col Number of column
@@ -50,13 +44,54 @@ function createBoxes(row, col, parent) {
 		box.setAttributeNode(dataNum);
 	}
 }
-
+// Setting box states with data-num attribute
+function setGameState() {
+	let boxes = document.querySelectorAll(".box");
+	boxes.forEach((box) => {
+		let att = box.attributes.getNamedItem("data-num").nodeValue;
+		let value = box.textContent;
+		gameState[att] = value;
+	});
+}
+// Changing current player
 function changeCurrentPlayer() {
 	currentPlayer === player1
 		? (currentPlayer = player2)
 		: (currentPlayer = player1);
 }
+// Using Canvas Confetti library to make a fireworks
+function fireworks() {
+	var duration = 3 * 1000;
+	var animationEnd = Date.now() + duration;
+	var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
+	function randomInRange(min, max) {
+		return Math.random() * (max - min) + min;
+	}
+	var interval = setInterval(function () {
+		var timeLeft = animationEnd - Date.now();
+
+		if (timeLeft <= 0) {
+			return clearInterval(interval);
+		}
+
+		var particleCount = 50 * (timeLeft / duration);
+		// since particles fall down, start a bit higher than random
+		confetti(
+			Object.assign({}, defaults, {
+				particleCount,
+				origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+			})
+		);
+		confetti(
+			Object.assign({}, defaults, {
+				particleCount,
+				origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+			})
+		);
+	}, 250);
+}
+// Checking gameState to is there any winner
 function checkWinner() {
 	winCombos.forEach((combo, index) => {
 		if (gameState[combo[0]] && gameState[combo[1]] && gameState[combo[2]]) {
@@ -72,14 +107,27 @@ function checkWinner() {
 				);
 				gameOver = true;
 				winner = gameState[combo[0]];
-				player.textContent = `${winner} is won!`;
+				player.textContent = `Player ${winner} is won!`;
+				resBtn.style.display = "block";
+				resBtn.addEventListener("click", restart);
+				fireworks();
 			}
 		}
 	});
 }
+// Restarting the game, clearing all values
+function restart() {
+	gameState = {};
+	gameOver = false;
+	winner = "";
+	document.querySelectorAll(".box").forEach((box, index) => {
+		box.textContent = "";
+	});
+	player.textContent = `Current Player: ${currentPlayer}`;
+	resBtn.style.display = "none";
+}
 
-
-function playGame() {
+function handleBoxClick() {
 	let boxes = document.querySelectorAll(".box");
 	boxes.forEach((box, index) => {
 		box.addEventListener("click", (e) => {
@@ -107,11 +155,9 @@ function playGame() {
 		});
 	});
 }
-
 function play() {
 	player.textContent = `Current Player: ${currentPlayer}`;
 	createBoxes(row, col, game);
-	playGame();
+	handleBoxClick();
 }
-
 play();
