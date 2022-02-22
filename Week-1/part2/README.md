@@ -1,6 +1,6 @@
 # Part 2
 
-🔴 Live Demo: [Website](https://orion-innovation-turkey-angular-bootcamp.vercel.app/)
+🔴 Live Demo: [Website](https://orion-tic-tac-toe-game.vercel.app/)
 
 <strong>Tic Tac Toe Uygulaması</strong>
 
