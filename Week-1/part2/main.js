@@ -100,11 +100,6 @@ function checkWinner() {
 				gameState[combo[1]] === gameState[combo[2]] &&
 				gameState[combo[0]] === gameState[combo[2]]
 			) {
-				console.log(
-					gameState[combo[0]],
-					gameState[combo[1]],
-					gameState[combo[2]]
-				);
 				gameOver = true;
 				winner = gameState[combo[0]];
 				player.textContent = `Player ${winner} is won!`;
@@ -114,6 +109,19 @@ function checkWinner() {
 			}
 		}
 	});
+}
+
+// Checking if is game state is Draw
+function isDraw() {
+	if (
+		Object.values(gameState).every((value) => value != false) &&
+		gameOver === false
+	) {
+		winner = "Draw";
+		player.textContent = `It's ${winner}!`;
+		resBtn.style.display = "block";
+		resBtn.addEventListener("click", restart);
+	}
 }
 // Restarting the game, clearing all values
 function restart() {
@@ -139,7 +147,7 @@ function handleBoxClick() {
 						player.textContent = `Current Player: ${currentPlayer}`;
 						setGameState();
 						checkWinner();
-						console.log(gameState);
+						isDraw();
 					}
 				} else if (currentPlayer === player2) {
 					if (!gameState[index]) {
@@ -148,7 +156,7 @@ function handleBoxClick() {
 						player.textContent = `Current Player: ${currentPlayer}`;
 						setGameState();
 						checkWinner();
-						console.log(gameState);
+						isDraw();
 					}
 				}
 			}
